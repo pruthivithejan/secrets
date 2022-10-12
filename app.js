@@ -7,7 +7,7 @@ const { request } = require('http');
 const mongoose = require('mongoose');
 const { ifError } = require('assert');
 const { log } = require('console');
-const encrypt = require('mongoose-encryption');
+const md5 = require('md5');
 
 const app = express();
 
@@ -26,9 +26,6 @@ const userSchema = new mongoose.Schema ({
     
 });
 
-const secret= process.env.SECRET;
-userSchema.plugin(encrypt, {secret : secret, encryptedFields: ["password"]});
-
 const User = new mongoose.model('User', userSchema);
 
 app.get('/', (req, res) => {
@@ -43,11 +40,15 @@ app.get('/register', (req, res) => {
     res.render("register");
 });
 
+app.get('/logout', (req, res) => {
+   res.render("home");	
+});
+
 // create user
 app.post('/register', (req, res) => {
     const newUser = new User({
         email: req.body.username,
-       password: req.body.password    
+       password: md5(req.body.password)    
     });
     
     newUser.save(function (err, user){
@@ -62,7 +63,7 @@ app.post('/register', (req, res) => {
 // check user for login
 app.post('/login', (req, res) => { 
     const username = req.body.username;
-    const password = req.body.password;
+    const password = md5(req.body.password);
 
     User.findOne({email: username}, function(err, foundUser){
         if (err){
@@ -80,5 +81,5 @@ app.post('/login', (req, res) => {
 
 
 app.listen(3000, function() {
-   console.log("listening on port 3000"); 
+   console.log("live on http://localhost:3000"); 
 });
