@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
 
 body {
+  font-family: 'Berkshire Swash', cursive;
   background-color: #E8ECEF;
+
 }
 
 .centered {
@@ -13,4 +16,8 @@ body {
   font-size: 2rem;
   color: #fff;
   background-color: #000;
+}
+
+.bxs-lock-open {
+  font-size: 7rem;
 }
